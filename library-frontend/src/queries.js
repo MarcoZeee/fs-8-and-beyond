@@ -19,3 +19,29 @@ query {
   }
 }
 `
+
+export const ADD_BOOK = gql`
+  mutation addBook($author: String!, $title: String!, $published: Int!, $genres: [String!]!) {
+    addBook(
+      author: $author
+      title: $title
+      published: $published
+      genres: $genres
+    ) {
+      title
+      author
+      published
+      genres
+    }
+
+  }
+`
+
+export const EDIT_AUTHOR = gql`
+mutation editAuthor($name: String!, $setBornTo: Int!) {
+    editAuthor(name: $name, setBornTo: $setBornTo) {
+        name
+        born
+    }
+}
+`
