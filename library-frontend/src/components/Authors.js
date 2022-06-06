@@ -3,7 +3,9 @@ import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries"
 
 const Authors = ({show}) => {
   const {loading, error, data} = useQuery(ALL_AUTHORS)
+  console.log(data)
   const authors = data ? data.allAuthors : [];
+  console.log(authors)
   const [updateAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }]
   })
@@ -32,7 +34,7 @@ const Authors = ({show}) => {
           {authors.map((a) => (
             <tr key={a.name}>
               <td>{a.name}</td>
-              <td>{a?.born}</td>
+              <td>{a.born}</td>
               <td>{a.bookCount}</td>
             </tr>
           ))}

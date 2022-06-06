@@ -19,7 +19,6 @@ const NewBook = ({show}) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    console.log('add book...')
     addBook({
       variables: {
         title,
