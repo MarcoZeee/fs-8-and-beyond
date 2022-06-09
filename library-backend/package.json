@@ -9,11 +9,17 @@
     "start": "nodemon index.js"
   },
   "dependencies": {
+    "@graphql-tools/schema": "^8.3.14",
     "apollo-server": "^3.8.1",
+    "apollo-server-core": "^3.8.2",
+    "apollo-server-express": "^3.8.2",
+    "express": "^4.18.1",
     "graphql": "^16.5.0",
+    "graphql-subscriptions": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.5",
     "nodemon": "^2.0.16",
+    "subscriptions-transport-ws": "^0.11.0",
     "uuid": "^8.3.2"
   }
 }

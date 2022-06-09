@@ -3,7 +3,9 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login";
-import { useApolloClient } from "@apollo/client";
+import Recommendations from "./components/Recommendations";
+import { useApolloClient, useSubscription } from "@apollo/client";
+import {ALL_BOOKS, BOOK_ADDED} from "./queries";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -15,6 +17,18 @@ const App = () => {
     localStorage.removeItem("cur-user-token");
     client.resetStore();
   }
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded;
+      window.alert(`${addedBook.title} added`);
+
+      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(addedBook),
+        }
+      })
+    }
+  })
 
   return (
     <div>
@@ -24,6 +38,7 @@ const App = () => {
         {token ? (
           <>
             <button onClick={() => setPage("add")}>add book</button>
+            <button onClick={() => setPage("recommendation")}>recommendation</button>
             <button onClick={logout}>logout</button>
           </>
         ) : (
@@ -36,6 +51,8 @@ const App = () => {
       <Books show={page === "books"} />
 
       <NewBook show={page === "add"} />
+
+      <Recommendations show={page === "recommendation"} />
 
       <Login
         show={page === "login"}

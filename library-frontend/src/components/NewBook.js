@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries'
+import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
 
 const NewBook = ({show}) => {
   const [title, setTitle] = useState('')
@@ -9,17 +9,21 @@ const NewBook = ({show}) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS}, {query: ALL_AUTHORS }]
-  })
-
+    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    onCompleted: (data) => console.log(data)
+  });
   if (!show) {
     return null
+  }
+  const addGenre = () => {
+    setGenres(genres.concat(genre))
+    setGenre('')
   }
 
   const submit = async (event) => {
     event.preventDefault()
 
-    addBook({
+    await addBook({
       variables: {
         title,
         author,
@@ -32,16 +36,12 @@ const NewBook = ({show}) => {
     setPublished('')
     setAuthor('')
     setGenres([])
-    setGenre('')
-  }
 
-  const addGenre = () => {
-    setGenres(genres.concat(genre))
-    setGenre('')
   }
-
+// Genres not added to the db yet.
   return (
     <div>
+      <h2>add a book</h2>
       <form onSubmit={submit}>
         <div>
           title

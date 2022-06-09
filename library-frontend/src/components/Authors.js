@@ -2,14 +2,16 @@ import { useQuery, useMutation } from "@apollo/client"
 import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries"
 
 const Authors = ({show}) => {
-  const {loading, error, data} = useQuery(ALL_AUTHORS)
-  console.log(data)
+  const {loading, error, data} = useQuery(ALL_AUTHORS, {
+    fetchPolicy: "cache-and-network"
+  })
   const authors = data ? data.allAuthors : [];
   console.log(authors)
   const [updateAuthor] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [{ query: ALL_AUTHORS }]
+    refetchQueries: [{ query: ALL_AUTHORS }],
   })
-  if(loading) return <div>loading...</div>
+  if(loading) return <div>loading...</div>;
+  if(error) return <div>{error.message}</div>;
   if (!show) {
     return null
   }
